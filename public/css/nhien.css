@@ -1,0 +1,8 @@
+.sidebar-role-admin [class*="menu-"],
+.sidebar-role-admin .sidebar-section:nth-child(3) {
+  display:none;
+}
+.sidebar-role-admin .menu-Users,
+.sidebar-role-admin .menu-Payrolls {
+  display:block;
+}
