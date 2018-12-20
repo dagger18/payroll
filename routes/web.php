@@ -37,3 +37,5 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
 
 
 
+
+Route::resource('admin/reports', 'Admin\\ReportsController');
