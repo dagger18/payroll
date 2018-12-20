@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Payroll;
+use App\Report;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,8 @@ class HomeController extends Controller
     {
         $ze = \Auth::user();
         $payrolls = Payroll::where('employeeId', $ze->id)->get();
-        return view('home', compact('payrolls'));
+        $reports = $ze->reports;
+        return view('home', compact('payrolls', 'reports'));
     }
     
     public function pdf($id)
@@ -40,5 +42,47 @@ class HomeController extends Controller
         } else {
             abort(404);
         }
+    }
+    
+    public function report($id)
+    {
+        $ze = \Auth::user();
+        $report = Report::findOrFail($id);
+        if($ze->hasRole('admin') || $ze->hasRole('superadmin') || $report->users->contains('id', $ze->id)) {
+            return response()->file(
+                '../storage/app/reports/' . $id
+            );
+        } else {
+            abort(404);
+        }
+    }
+    
+    public function avatar($id)
+    {
+        $ze = \Auth::user();
+        if($ze->hasRole('admin') || $ze->hasRole('superadmin') || $ze->id == $id) {
+            return response()->file(
+                '../storage/app/avatar/' . $id
+            );
+            return Storage::response('../storage/app/avatar/' . $id, $ze->avatar);
+        } else {
+            abort(404);
+        }
+    }
+    
+    public function uploadAvatar(Request $request)
+    {
+        $ze = \Auth::user();
+        if ($request->isMethod('post')) {
+            if ($request->hasFile('file')) {
+                
+                $ze->avatar = $request->file->getClientOriginalName();
+                $request->file->storeAs(
+                    'avatar', $ze->id
+                );
+                $ze->save();
+            }
+        }
+        return view('avatar', compact('ze'));
     }
 }

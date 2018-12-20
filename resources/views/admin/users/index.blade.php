@@ -12,6 +12,9 @@
                         <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
+                        <a href="{{ url('/admin/diagram') }}" class="btn btn-success btn-sm" title="View Diagram">
+                            <i class="fa fa-eye" aria-hidden="true"></i> Biểu đồ
+                        </a>
 
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/users', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
                         <div class="input-group">
@@ -27,18 +30,19 @@
                         <br/>
                         <br/>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-middle">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
+                                        <th>Avatar</th><th>Tên</th><th>Email</th><th>Chức vụ</th><th>Phòng</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($users as $item)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td><img src="/avatar/{{ $item->id }}" style="width:50px; height:50px;border-radius:3px;" /></td>
                                         <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->email }}</td>
-                                        <td>@foreach($item->roles as $role) {{ $role->name  }} @endforeach</td>
+                                        <td>@foreach($item->roles as $role) {{ $role->label }} @endforeach</td>
+                                        <td>{{ $item->department }}</td>
                                         <td>
                                             <a href="{{ url('/admin/users/' . $item->id) }}" title="View User"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/users/' . $item->id . '/edit') }}" title="Edit User"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

@@ -1,6 +1,6 @@
 <div class="form-group{{ $errors->has('file') ? 'has-error' : ''}}">
     {!! Form::label('file', 'File', ['class' => 'control-label']) !!}
-    {!! Form::file('file', ['class' => 'form-control', 'accept' => '.pdf', 'style' => 'height: auto']) !!}
+    {!! Form::file('file', ['class' => 'form-control', 'style' => 'height: auto']) !!}
     {!! $errors->first('file', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group{{ $errors->has('name') ? 'has-error' : ''}}">

@@ -43,6 +43,17 @@
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @if (Auth::user()->hasRole('superadmin') || Auth::user()->hasRole('admin'))
+                                    <a class="dropdown-item" href="{{ url('/admin') }}">
+                                        Quản lý
+                                    </a>
+                                    @endif
+                                    <a class="dropdown-item" href="{{ url('/') }}">
+                                        Tài liệu
+                                    </a>
+                                    <a class="dropdown-item" href="{{ url('/upload-avatar') }}">
+                                        Avatar
+                                    </a>
                                     <a class="dropdown-item" href="{{ url('/logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

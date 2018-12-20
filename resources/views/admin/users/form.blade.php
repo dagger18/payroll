@@ -23,6 +23,11 @@
     {!! Form::label('role', 'Role: ', ['class' => 'control-label']) !!}
     {!! Form::select('roles[]', $roles, isset($user_roles) ? $user_roles : [], ['class' => 'form-control', 'multiple' => true]) !!}
 </div>
+<div class="form-group{{ $errors->has('department') ? ' has-error' : ''}}">
+    {!! Form::label('department', 'Phòng: ', ['class' => 'control-label']) !!}
+    {!! Form::text('department', null, ['class' => 'form-control']) !!}
+    {!! $errors->first('department', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group">
     {!! Form::submit($formMode === 'edit' ? 'Update' : 'Create', ['class' => 'btn btn-primary']) !!}
 </div>

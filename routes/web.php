@@ -18,7 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::match(['get', 'post'], '/upload-avatar', 'HomeController@uploadAvatar')->name('uploadAvatar');
 Route::get('/pdf/{id}', 'HomeController@pdf')->name('pdf');
+Route::get('/avatar/{id}', 'HomeController@avatar')->name('avatar');
+Route::get('/report/{id}', 'HomeController@report')->name('report');
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' => ['admin', 'superadmin']], function () {
   Route::get('/', 'AdminController@index');
@@ -30,6 +33,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
   Route::resource('activitylogs', 'ActivityLogsController')->only([
       'index', 'show', 'destroy'
   ]);
+  Route::get('/diagram', 'UsersController@diagram');
   Route::resource('settings', 'SettingsController');
   Route::get('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
   Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);

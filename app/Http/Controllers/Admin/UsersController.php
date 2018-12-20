@@ -21,11 +21,24 @@ class UsersController extends Controller
         $perPage = 15;
 
         if (!empty($keyword)) {
-            $users = User::where('id', '!=', 2)->with('roles')->where('name', 'LIKE', "%$keyword%")->orWhere('email', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
+            $users = User::where('id', '>', 2)
+                        ->where(function($q) use ($keyword) {
+                            $q->where('name', 'LIKE', "%$keyword%")
+                                ->orWhere('email', 'LIKE', "%$keyword%");
+                        });
         } else {
-            $users = User::where('id', '!=', 2)->with('roles')->latest()->paginate($perPage);
+            $users = User::where('id', '>', 2);
         }
+        
+        $ze = \Auth::user();
+        if ($ze->hasRole('admin')) {
+            
+            $users->whereDoesntHave('roles', function($q) {
+                $q->where('name','admin');
+            });
+        }
+        
+        $users = $users->with('roles')->latest()->paginate($perPage);
 
         return view('admin.users.index', compact('users'));
     }
@@ -37,7 +50,12 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $roles = Role::where('id', '!=', 1)->select('id', 'name', 'label')->get();
+        $ze = \Auth::user();
+        if ($ze->hasRole('admin')) {
+            $roles = Role::where('id', '>', 2)->select('id', 'name', 'label')->get();
+        } else {
+            $roles = Role::where('id', '!=', 1)->select('id', 'name', 'label')->get();
+        }
         $roles = $roles->pluck('label', 'name');
 
         return view('admin.users.create', compact('roles'));
@@ -96,7 +114,13 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $roles = Role::where('id', '!=', 1)->select('id', 'name', 'label')->get();
+        
+        $ze = \Auth::user();
+        if ($ze->hasRole('admin')) {
+            $roles = Role::where('id', '>', 2)->select('id', 'name', 'label')->get();
+        } else {
+            $roles = Role::where('id', '!=', 1)->select('id', 'name', 'label')->get();
+        }
         $roles = $roles->pluck('label', 'name');
 
         $user = User::with('roles')->select('id', 'name', 'email')->findOrFail($id);
@@ -156,4 +180,19 @@ class UsersController extends Controller
 
         return redirect('admin/users')->with('flash_message', 'User deleted!');
     }
+    
+    public function diagram()
+    {
+        $users = User::whereDoesntHave('roles', function($q) {
+                    $q->where('id', '<=', 2);
+                })->with('roles')->latest()->get();
+        $levels = [];
+        foreach($users as $user) {
+            $levels[$user->roles[0]->level][] = $user;
+        }
+        ksort($levels);
+        return view('admin.users.diagram', compact('levels'));
+        
+    }
+    
 }

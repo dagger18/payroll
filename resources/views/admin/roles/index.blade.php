@@ -31,16 +31,16 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <!--<th>ID</th><th>Name</th>--><th>Name</th><!--<th>Actions</th>-->
+                                        <!--<th>ID</th><th>Name</th>--><th>Name</th><th>Level</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($roles as $item)
                                     <tr>
                                         <!--<td>{{ $item->id }}</td>
-                                        <td><a href="{{ url('/admin/roles', $item->id) }}">{{ $item->name }}</a></td>--><td>{{ $item->label }}</td>
-                                        <!--
+                                        <td><a href="{{ url('/admin/roles', $item->id) }}">{{ $item->name }}</a></td>--><td>{{ $item->label }}</td><td>{{ $item->level }}</td>
                                         <td>
+                                            @if ($item->level != 0)
                                             <a href="{{ url('/admin/roles/' . $item->id) }}" title="View Role"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/roles/' . $item->id . '/edit') }}" title="Edit Role"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
                                             {!! Form::open([
@@ -55,8 +55,8 @@
                                                         'onclick'=>'return confirm("Confirm delete?")'
                                                 )) !!}
                                             {!! Form::close() !!}
+                                            @endif
                                         </td>
-                                        -->
                                     </tr>
                                 @endforeach
                                 </tbody>
