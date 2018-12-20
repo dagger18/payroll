@@ -39,7 +39,13 @@
                                 <tbody>
                                 @foreach($users as $item)
                                     <tr>
-                                        <td><img src="/avatar/{{ $item->id }}" style="width:50px; height:50px;border-radius:3px;" /></td>
+                                        <td>
+                                            @if (empty($item->avatar))
+                                            <img src="/svg/avatar.png" />
+                                            @else
+                                            <img src="/avatar/{{ $item->id }}" style="width:40px; height:40px;border-radius:3px;" />
+                                            @endif
+                                        </td>
                                         <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->email }}</td>
                                         <td>@foreach($item->roles as $role) {{ $role->label }} @endforeach</td>
                                         <td>{{ $item->department }}</td>
