@@ -34,11 +34,10 @@ class PayrollController extends Controller
         
         $users = User::all();
         foreach($users as $user) {
-            if($user->hasRole('employee')) {
-                $employees[$user->id] = $user;
-            }
             if($user->hasRole('admin') || $user->hasRole('superadmin')) {
                 $admins[$user->id] = $user;
+            } else {
+                $employees[$user->id] = $user;
             }
         }
         return view('admin.payroll.index', compact('payroll', 'employees', 'admins'));
@@ -51,11 +50,12 @@ class PayrollController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        $users = User::whereDoesntHave('roles', function($q) {
+                    $q->where('id', '<=', 2);
+                })->with('roles')->latest()->get();
         foreach($users as $user) {
-            if($user->hasRole('employee')) {
-                $employees[$user->id] = $user->name;
-            }
+            $employees[$user->id] = $user->name;
+            
         }
         return view('admin.payroll.create', compact('employees'));
     }
@@ -114,11 +114,11 @@ class PayrollController extends Controller
     public function edit($id)
     {
         $payroll = Payroll::findOrFail($id);
-        $users = User::all();
+        $users = User::whereDoesntHave('roles', function($q) {
+                    $q->where('id', '<=', 2);
+                })->with('roles')->latest()->get();
         foreach($users as $user) {
-            if($user->hasRole('employee')) {
-                $employees[$user->id] = $user->name;
-            }
+            $employees[$user->id] = $user->name;
         }
         return view('admin.payroll.edit', compact('payroll', 'employees'));
     }

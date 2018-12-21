@@ -41,9 +41,9 @@
                                     <tr>
                                         <td>
                                             @if (empty($item->avatar))
-                                            <img src="/svg/avatar.png" />
+                                            <img src="/svg/avatar.png" style="width:40px; height:40px;border-radius:50%; border:2px solid cornflowerblue;" />
                                             @else
-                                            <img src="/avatar/{{ $item->id }}" style="width:40px; height:40px;border-radius:3px;" />
+                                            <img src="/avatar/{{ $item->id }}" style="width:40px; height:40px;border-radius:50%; border:2px solid cornflowerblue;"/>
                                             @endif
                                         </td>
                                         <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->email }}</td>
