@@ -30,10 +30,19 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
+                                    <tr><th> File </th><td> {{ $report->file }} </td></tr>
+                                    <tr><th> CreatedBy </th><td> {{ $report->createdBy }} </td></tr>
+                                    <tr><th> Name </th><td> {{ $report->name }} </td></tr>
                                     <tr>
-                                        <th>ID</th><td>{{ $report->id }}</td>
+                                        <th> Viewers </th>
+                                        <td> 
+                                            <ul>
+                                                @foreach($report->users as $user)
+                                                <li>{{ $user->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
                                     </tr>
-                                    <tr><th> File </th><td> {{ $report->file }} </td></tr><tr><th> CreatedBy </th><td> {{ $report->createdBy }} </td></tr><tr><th> Name </th><td> {{ $report->name }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

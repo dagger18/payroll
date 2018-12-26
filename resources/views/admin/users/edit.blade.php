@@ -24,7 +24,8 @@
                         {!! Form::model($user, [
                             'method' => 'PATCH',
                             'url' => ['/admin/users', $user->id],
-                            'class' => 'form-horizontal'
+                            'class' => 'form-horizontal',
+                            'files' => true
                         ]) !!}
 
                         @include ('admin.users.form', ['formMode' => 'edit'])

@@ -29,8 +29,16 @@ class ReportsController extends Controller
         } else {
             $reports = Report::latest()->paginate($perPage);
         }
-
-        return view('admin.reports.index', compact('reports'));
+        
+        $users = User::all();
+        foreach($users as $user) {
+            if($user->hasRole('admin') || $user->hasRole('superadmin')) {
+                $admins[$user->id] = $user;
+            } else {
+                $employees[$user->id] = $user;
+            }
+        }
+        return view('admin.reports.index', compact('reports', 'employees', 'admins'));
     }
 
     /**

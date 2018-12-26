@@ -76,14 +76,25 @@ class UsersController extends Controller
                 'name' => 'required',
                 'email' => 'required|string|max:255|email|unique:users',
                 'password' => 'required',
-                'roles' => 'required'
+                'roles' => 'required',
+                'department' => ''
             ]
         );
 
         $data = $request->except('password');
         $data['password'] = bcrypt($request->password);
+        
         $user = User::create($data);
-
+        
+        if ($request->hasFile('file')) {
+                
+            $user->avatar = $request->file->getClientOriginalName();
+            $request->file->storeAs(
+                'avatar', $user->id
+            );
+            $user->save();
+        }
+        
         foreach ($request->roles as $role) {
             $user->assignRole($role);
         }
@@ -123,7 +134,7 @@ class UsersController extends Controller
         }
         $roles = $roles->pluck('label', 'name');
 
-        $user = User::with('roles')->select('id', 'name', 'email')->findOrFail($id);
+        $user = User::with('roles')->select('id', 'name', 'email', 'department', 'avatar')->findOrFail($id);
         $user_roles = [];
         foreach ($user->roles as $role) {
             $user_roles[] = $role->name;
@@ -147,7 +158,8 @@ class UsersController extends Controller
             [
                 'name' => 'required',
                 'email' => 'required|string|max:255|email|unique:users,email,' . $id,
-                'roles' => 'required'
+                'roles' => 'required',
+                'department' => ''
             ]
         );
 
@@ -155,7 +167,13 @@ class UsersController extends Controller
         if ($request->has('password') && $request->password != '') {
             $data['password'] = bcrypt($request->password);
         }
-
+        
+        if ($request->hasFile('file')) {
+            $data['avatar'] = $request->file->getClientOriginalName();
+            $request->file->storeAs(
+                'avatar', $id
+            );
+        }
         $user = User::findOrFail($id);
         $user->update($data);
 

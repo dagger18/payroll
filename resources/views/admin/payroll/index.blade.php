@@ -30,7 +30,6 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>File</th>
                                         <th>Month</th>
                                         <th>Employee</th>
@@ -41,7 +40,6 @@
                                 <tbody>
                                 @foreach($payroll as $item)
                                     <tr>
-                                        <td>{{ $item->id }}</td>
                                         <td><p style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ $item->file }}</p></td>
                                         <td>{!! str_pad($item->month, 2, '0', STR_PAD_LEFT) !!}/{{ $item->year }}</td>
                                         <td>{{ $employees[$item->employeeId]->name }}</td>

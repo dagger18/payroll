@@ -28,6 +28,14 @@
     {!! Form::text('department', null, ['class' => 'form-control']) !!}
     {!! $errors->first('department', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group{{ $errors->has('file') ? 'has-error' : ''}}">
+    {!! Form::label('file', 'File', ['class' => 'control-label']) !!}
+    {!! Form::file('file', ['class' => 'form-control', 'style' => 'height: auto']) !!}
+    {!! $errors->first('file', '<p class="help-block">:message</p>') !!}
+    @if ($user->avatar != '')
+    <img src="/avatar/{{ $user->id }}" style="max-height:200px;margin: 10px 0;" />
+    @endif
+</div>
 <div class="form-group">
     {!! Form::submit($formMode === 'edit' ? 'Update' : 'Create', ['class' => 'btn btn-primary']) !!}
 </div>

@@ -30,14 +30,13 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>File</th><th>CreatedBy</th><th>Name</th><th>Actions</th>
+                                        <th>File</th><th>Created By</th><th>Name</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($reports as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->file }}</td><td>{{ $item->createdBy }}</td><td>{{ $item->name }}</td>
+                                        <td>{{ $item->file }}</td><td>{{ $admins[$item->createdBy]->name }}</td><td>{{ $item->name }}</td>
                                         <td>
                                             <a href="{{ url('/admin/reports/' . $item->id) }}" title="View Report"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/reports/' . $item->id . '/edit') }}" title="Edit Report"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

@@ -34,3 +34,10 @@ ul.diagram-level {
 .diagram > li {
     padding-bottom: 40px;
 }
+select.form-control[multiple]{
+    height: 300px;
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}
