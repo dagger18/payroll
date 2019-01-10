@@ -14,6 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/nhien.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body data-page="{{ \Request::route()->getName() }}">
     <div id="app" >
@@ -33,7 +34,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    <ul class="navbar-nav ml-auto" style="display:none;">
                         <!-- Authentication Links -->
                         @if(!Auth::check())
                             <li><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
@@ -71,9 +72,76 @@
                 </div>
             </div>
         </nav>
-
+        
         <main class="py-4">
-            @yield('content')
+            <nav class="role-navigation">
+                <ul class="navigation-dboard">
+                    <li class="">
+                        <a href="/home">
+                            <div class="dbmn-icon">
+                                <i class="material-icons"> monetization_on </i>
+                            </div>
+                            <span>Bảng lương</span>
+                        </a>
+                    </li>
+                    
+                    <li class="active">
+                        <a href="/my-report">
+                            <div class="dbmn-icon">
+                                <i class="material-icons"> folder_shared </i>
+                            </div>
+                            <span>Tài liệu</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/upload-avatar">
+                            <div class="dbmn-icon">
+                                <i class="material-icons"> settings </i>
+                            </div>
+                            <span>Tài khoản</span>
+                        </a>
+                    </li>
+                    
+                    <li class="">
+                        <a href="{{ url('/logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            <div class="dbmn-icon">
+                                <i class="material-icons"> power_settings_new </i>
+                            </div>
+                            <span>Đăng xuất</span>
+                        </a>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-dboard">
+                <div class="block-informations">
+                    <div class="infos-school">
+                        <div class="cover-bg">
+                           <img src="/img/holder.jpg" alt="">
+                        </div>
+                        <div class="logo-center">
+                           <img src="/avatar/{{ Auth::user()->id }}" alt="">
+                        </div>
+                        <div class="infos-center">
+                            <h2 class="heading-name">{{ Auth::user()->name }}</h2>
+                            <div class="info">
+                                <p class="sp-value" data-toggle="tooltip" data-placement="top" title="" data-original-title="Type d'établissement">Phòng {{ Auth::user()->department }}</p>
+                        
+                                <p class="sp-value" data-toggle="tooltip" data-placement="top" title="" data-original-title="Nom du responsable">Chức vụ <br> -- {{ Auth::user()->roles[0]->label }} --</p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="bo-main-content">
+                @yield('content')
+                </div>
+            </div>
+            
         </main>
     </div>
 

@@ -27,8 +27,14 @@ class HomeController extends Controller
     {
         $ze = \Auth::user();
         $payrolls = Payroll::where('employeeId', $ze->id)->get();
+        return view('home', compact('payrolls'));
+    }
+    
+    public function myReport()
+    {
+        $ze = \Auth::user();
         $reports = $ze->reports;
-        return view('home', compact('payrolls', 'reports'));
+        return view('report', compact('reports'));
     }
     
     public function pdf($id)

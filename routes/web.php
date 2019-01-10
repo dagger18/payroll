@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/my-report', 'HomeController@myReport')->name('my-report');
 Route::match(['get', 'post'], '/upload-avatar', 'HomeController@uploadAvatar')->name('uploadAvatar');
 Route::get('/pdf/{id}', 'HomeController@pdf')->name('pdf');
 Route::get('/avatar/{id}', 'HomeController@avatar')->name('avatar');
